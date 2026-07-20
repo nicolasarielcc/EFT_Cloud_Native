@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe EFT — Cursos Online — CDY2204 Semana 9</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --green: #059669;
+    --green-bg: #d1fae5;
+    --yellow: #d97706;
+    --yellow-bg: #fef3c7;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+    --radius: 6px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text);
+    background: #f1f5f9;
+    line-height: 1.7;
+    font-size: 14px;
+  }
+
+  .page {
+    max-width: 960px;
+    margin: 40px auto;
+    background: var(--bg);
+    padding: 64px 72px;
+    box-shadow: var(--shadow);
+    border-radius: 4px;
+  }
+
+  /* ── Portada ── */
+  .portada {
+    text-align: center;
+    padding: 60px 0 50px;
+    border-bottom: 3px solid var(--accent);
+    margin-bottom: 48px;
+  }
+  .portada .institucion {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .portada h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .portada .asignatura {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .portada .semana {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  /* ── Índice ── */
+  .indice {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 32px;
+    margin-bottom: 48px;
+  }
+  .indice h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .indice ol {
+    list-style: decimal;
+    padding-left: 20px;
+    columns: 2;
+    column-gap: 40px;
+  }
+  .indice li {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .indice a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .indice a:hover { text-decoration: underline; }
+
+  /* ── Secciones ── */
+  section { margin-bottom: 48px; }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 24px;
+  }
+  h2 .puntos {
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 28px 0 12px;
+  }
+  h3:first-child { margin-top: 0; }
+
+  h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 20px 0 8px;
+  }
+
+  p { margin-bottom: 12px; font-size: 14px; }
+
+  /* ── Tablas ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  thead { background: #f8fafc; }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── Código ── */
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 16px 20px;
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 12.5px;
+    line-height: 1.6;
+    margin: 12px 0 18px;
+  }
+  code {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 12.5px;
+  }
+  :not(pre) > code {
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+    font-size: 12.5px;
+  }
+
+  /* ── Badges / Estados ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .badge-ok  { background: var(--green-bg); color: var(--green); }
+  .badge-warn { background: var(--yellow-bg); color: var(--yellow); }
+  .badge-pen { background: var(--red-bg); color: var(--red); }
+
+  /* ── Diagrama ── */
+  .diagram {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+  .diagram pre {
+    background: transparent;
+    color: var(--text);
+    padding: 0;
+    margin: 0;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  /* ── Archivo path ── */
+  .filepath {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: -8px;
+    margin-bottom: 12px;
+  }
+
+  /* ── Listas ── */
+  ul, ol { margin: 8px 0 12px 24px; }
+  li { margin-bottom: 4px; font-size: 14px; }
+
+  /* ── Checklist ── */
+  .checklist { list-style: none; padding-left: 0; }
+  .checklist li { padding: 4px 0 4px 28px; position: relative; }
+  .checklist li::before {
+    content: '☐';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+  }
+  .checklist li.done::before { content: '☑'; color: var(--green); }
+
+  /* ── Resumen ── */
+  .resumen-criterios {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .criterio-card {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .criterio-num {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .criterio-num.ok { background: var(--green); }
+  .criterio-num.warn { background: var(--yellow); }
+  .criterio-num.pen { background: var(--muted); }
+  .criterio-info {
+    flex: 1;
+  }
+  .criterio-info strong {
+    display: block;
+    font-size: 13px;
+    line-height: 1.3;
+  }
+  .criterio-info span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* ── Figuras / Imágenes ── */
+  .figure {
+    margin: 20px 0;
+    text-align: center;
+  }
+  .figure img {
+    max-width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .figure figcaption {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; max-width: 100%; padding: 40px 48px; margin: 0; }
+    h2 { page-break-before: always; }
+    h2:first-of-type { page-break-before: avoid; }
+    pre, .diagram { page-break-inside: avoid; }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .page { padding: 32px 24px; margin: 16px; }
+    .indice ol { columns: 1; }
+    .resumen-criterios { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<!-- ════════════════ PORTADA ════════════════ -->
+<header class="portada">
+  <div class="institucion">Duoc UC — Fundación Instituto Profesional</div>
+  <h1>Informe de Evaluación Final Transversal</h1>
+  <div class="asignatura">Desarrollo Cloud Native (CDY2204)</div>
+  <div class="semana">Semana 9 — Plataforma de Gestión de Transporte</div>
+</header>
+
+<!-- ════════════════ ÍNDICE ════════════════ -->
+<nav class="indice">
+  <h2>Índice</h2>
+  <ol>
+    <li><a href="#s1">Introducción</a></li>
+    <li><a href="#s2">Microservicios Backend en Spring Boot <em>(20 pts)</em></a></li>
+    <li><a href="#s3">Colas de Mensajes en RabbitMQ <em>(15 pts)</em></a></li>
+    <li><a href="#s4">Identity as a Service — Azure AD B2C <em>(15 pts)</em></a></li>
+    <li><a href="#s5">API Manager <em>(10 pts)</em></a></li>
+    <li><a href="#s6">Almacenamiento en la Nube — AWS S3 <em>(10 pts)</em></a></li>
+    <li><a href="#s7">Despliegue Pipeline CI/CD <em>(10 pts)</em></a></li>
+    <li><a href="#s8">Documentación del Sistema <em>(10 pts)</em></a></li>
+    <li><a href="#s9">Video Explicativo <em>(10 pts)</em></a></li>
+    <li><a href="#s10">Anexo: Estructura Completa del Proyecto</a></li>
+  </ol>
+</nav>
+
+<!-- ════════════════ 1. INTRODUCCIÓN ════════════════ -->
+<section id="s1">
+  <h2>1. Introducción</h2>
+
+  <h3>1.1 Descripción del sistema</h3>
+  <p>El proyecto <code>cursos_online</code> implementa una plataforma Cloud Native de gestión de transporte compuesta por <strong>dos microservicios Spring Boot</strong> que se comunican de forma asíncrona mediante <strong>RabbitMQ</strong> (patrón productor-consumidor). El sistema permite la gestión completa de guías de despacho y transportistas, integrando autenticación con <strong>Azure AD B2C</strong>, almacenamiento cloud en <strong>AWS S3</strong>, y despliegue automatizado mediante <strong>Docker + GitHub Actions</strong> sobre una instancia <strong>EC2</strong>.</p>
+
+  <h3>1.2 Arquitectura general</h3>
+  <div class="diagram"><pre>                    ┌─────────────────────────────────────────┐
+                    │       Docker Network: cloud-network       │
+                    │                                          │
+  Cliente ──(JWT)──▶   Producer (:8080)                        │
+  (Postman)          │  ├─ SecurityConfig (Azure AD B2C)        │
+                     │  ├─ RabbitMQProducer ──▶ RabbitMQ        │
+                     │  └─ RestTemplate ──(HTTP GET)──┐         │
+                     │                                │         │
+                     │                    RabbitMQ    │         │
+                     │                   (host=rabbitmq)│        │
+                     │                                │         │
+                     │  Consumer (:8081) ◀──listen─────┘         │
+                     │  ├─ RabbitMQListener                         │
+                     │  ├─ H2 Database (JPA)                      │
+                     │  ├─ GuiaService + TransportistaService     │
+                     │  └─ AWS S3 (subida/descarga/eliminación)  │
+                     │                                          │
+                     └─────────────────────────────────────────┘</pre></div>
+</section>
+
+<!-- ════════════════ 2. MICROSERVICIOS SPRING BOOT ════════════════ -->
+<section id="s2">
+  <h2>2. Microservicios Backend en Spring Boot <span class="puntos">(20 pts)</span></h2>
+
+  <h3>2.1 Estructura del proyecto Maven multi-módulo</h3>
+  <p class="filepath">Archivo raíz: pom.xml</p>
+  <pre>&lt;groupId&gt;com.duoc&lt;/groupId&gt;
+&lt;artifactId&gt;transportmanagement&lt;/artifactId&gt;
+&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+&lt;modules&gt;
+    &lt;module&gt;transportmanagement-producer&lt;/module&gt;
+    &lt;module&gt;transportmanagement-consumer&lt;/module&gt;
+&lt;/modules&gt;</pre>
+
+  <table>
+    <thead><tr><th>Módulo</th><th>Puerto</th><th>Descripción</th><th>Spring Security</th></tr></thead>
+    <tbody>
+      <tr><td><code>transportmanagement-producer</code></td><td>8080</td><td>BFF — Orquesta llamadas, expone API REST securitizada, envía mensajes a RabbitMQ</td><td><span class="badge badge-ok">Sí (Azure AD B2C)</span></td></tr>
+      <tr><td><code>transportmanagement-consumer</code></td><td>8081</td><td>Servicio interno — Procesa mensajes de RabbitMQ, lógica de negocio, acceso a BD y S3</td><td><span class="badge badge-warn">No</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>2.2 Dependencias clave</h3>
+  <h4>Producer</h4>
+  <p class="filepath">transportmanagement-producer/pom.xml</p>
+  <ul>
+    <li><code>spring-boot-starter-web</code> — API REST</li>
+    <li><code>spring-boot-starter-data-jpa</code> — Persistencia JPA</li>
+    <li><code>spring-boot-starter-amqp</code> — RabbitMQ</li>
+    <li><code>spring-boot-starter-security</code> — Seguridad</li>
+    <li><code>spring-boot-starter-oauth2-resource-server</code> — JWT Azure AD B2C</li>
+    <li><code>spring-security-oauth2-jose</code> — Validación JWT</li>
+    <li><code>spring-boot-starter-validation</code> — Validaciones Jakarta</li>
+    <li><code>spring-boot-starter-actuator</code> — Health checks</li>
+  </ul>
+
+  <h4>Consumer</h4>
+  <p class="filepath">transportmanagement-consumer/pom.xml</p>
+  <ul>
+    <li>Mismas dependencias que el producer <strong>excepto</strong> las de Spring Security/OAuth2</li>
+    <li>Adicional: <code>spring-cloud-aws-dependencies</code> (BOM v2.3.0) y <code>spring-cloud-aws-messaging</code> para S3</li>
+  </ul>
+
+  <p><strong>Versiones:</strong> Java 21 &middot; Spring Boot 3.5.14 &middot; Spring Cloud AWS 2.3.0 &middot; Lombok 1.18.46</p>
+
+  <h3>2.3 Producer — BFF (Backend for Frontend)</h3>
+  <p class="filepath">transportmanagement-producer/src/main/java/com/duoc/transportmanagement/</p>
+
+  <h4>GuiaController — 12 endpoints</h4>
+  <table>
+    <thead><tr><th>Método</th><th>Endpoint</th><th>Descripción</th><th>Comunicación</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td>/api/guias</td><td>Listar todas las guías</td><td>HTTP → Consumer</td></tr>
+      <tr><td><code>GET</code></td><td>/api/guias/{id}</td><td>Obtener guía por ID</td><td>HTTP → Consumer</td></tr>
+      <tr><td><code>POST</code></td><td>/api/guias</td><td>Crear guía</td><td>RabbitMQ (async)</td></tr>
+      <tr><td><code>PUT</code></td><td>/api/guias/{id}</td><td>Modificar guía</td><td>RabbitMQ (async)</td></tr>
+      <tr><td><code>DELETE</code></td><td>/api/guias/{id}</td><td>Eliminar guía</td><td>RabbitMQ (async)</td></tr>
+      <tr><td><code>GET</code></td><td>/api/guias/transportista/{id}</td><td>Buscar por transportista</td><td>HTTP → Consumer</td></tr>
+      <tr><td><code>GET</code></td><td>/api/guias/fecha/{fecha}</td><td>Buscar por fecha</td><td>HTTP → Consumer</td></tr>
+      <tr><td><code>POST</code></td><td>/api/guias/s3/{id}</td><td>Subir archivo a S3</td><td>RabbitMQ (async)</td></tr>
+      <tr><td><code>PUT</code></td><td>/api/guias/s3/{id}</td><td>Actualizar archivo en S3</td><td>RabbitMQ (async)</td></tr>
+      <tr><td><code>GET</code></td><td>/api/guias/s3/{id}</td><td>Descargar archivo de S3</td><td>HTTP → Consumer</td></tr>
+      <tr><td><code>DELETE</code></td><td>/api/guias/s3/{id}</td><td>Eliminar archivo de S3</td><td>RabbitMQ (async)</td></tr>
+    </tbody>
+  </table>
+
+  <h4>TransportistaController — 5 endpoints</h4>
+  <table>
+    <thead><tr><th>Método</th><th>Endpoint</th><th>Descripción</th><th>Comunicación</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td>/api/transportistas</td><td>Listar transportistas</td><td>HTTP → Consumer</td></tr>
+      <tr><td><code>GET</code></td><td>/api/transportistas/{id}</td><td>Obtener transportista</td><td>HTTP → Consumer</td></tr>
+      <tr><td><code>POST</code></td><td>/api/transportistas</td><td>Crear transportista</td><td>RabbitMQ (async)</td></tr>
+      <tr><td><code>PUT</code></td><td>/api/transportistas/{id}</td><td>Modificar transportista</td><td>RabbitMQ (async)</td></tr>
+      <tr><td><code>DELETE</code></td><td>/api/transportistas/{id}</td><td>Eliminar transportista</td><td>RabbitMQ (async)</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Total: 17 endpoints REST</strong> que devuelven datos en formato JSON.</p>
+
+  <h4>Patrón de comunicación BFF</h4>
+  <ol>
+    <li><strong>Lecturas (GET):</strong> Síncronas vía <code>RestTemplate</code> → <code>ConsumerClient</code> → Consumer (:8081)</li>
+    <li><strong>Escrituras (POST/PUT/DELETE):</strong> Asíncronas vía RabbitMQ → colas → Consumer procesa</li>
+  </ol>
+
+  <p class="filepath">ConsumerClient.java — transportmanagement-producer/service/</p>
+  <pre>@Component
+public class ConsumerClient {
+    @Autowired private RestTemplate restTemplate;
+    @Value("${aws.consumer.url}") private String consumerUrl;
+
+    public GuiaDTO findGuiaById(Long id) {
+        return restTemplate.getForObject(consumerUrl + "/api/guias/" + id, GuiaDTO.class);
+    }
+    public List&lt;GuiaResumenDTO&gt; findAllGuias() {
+        return restTemplate.exchange(consumerUrl + "/api/guias", ...);
+    }
+    // Métodos similares para transportistas, búsqueda por fecha, descarga S3
+}</pre>
+
+  <h3>2.4 Consumer — Procesador de negocio</h3>
+  <h4>Controladores internos</h4>
+  <table>
+    <thead><tr><th>Controller</th><th>Endpoints</th><th>Propósito</th></tr></thead>
+    <tbody>
+      <tr><td><code>GuiaController</code></td><td>5 (GET)</td><td>Consultas de guías desde BD</td></tr>
+      <tr><td><code>TransportistaController</code></td><td>2 (GET)</td><td>Consultas de transportistas</td></tr>
+      <tr><td><code>RabbitMQController</code></td><td>2 (POST)</td><td>Procesamiento manual de colas (prueba)</td></tr>
+      <tr><td><code>S3Controller</code></td><td>6</td><td>Gestión completa de archivos S3</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Modelos JPA</h4>
+  <table>
+    <thead><tr><th>Entidad</th><th>Campos principales</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>GuiaDespacho</code></td>
+        <td>id (PK), numeroGuia (unique), fechaGeneracion, cliente, direccionEntrega, descripcionCarga, estado, rutaEfs, rutaS3, transportista (@ManyToOne)</td>
+      </tr>
+      <tr>
+        <td><code>Transportista</code></td>
+        <td>id (PK), nombre (@NotBlank), rut (@NotBlank), telefono (@NotBlank), correo (@NotBlank)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>2.5 Evidencia de cumplimiento</h3>
+  <table>
+    <thead><tr><th>Requisito</th><th>Estado</th><th>Evidencia</th></tr></thead>
+    <tbody>
+      <tr><td>Microservicios en Spring Boot</td><td><span class="badge badge-ok">✅</span></td><td>2 módulos Spring Boot 3.5.14 con Java 21</td></tr>
+      <tr><td>API REST con JSON</td><td><span class="badge badge-ok">✅</span></td><td>17 endpoints en Producer + 14 en Consumer</td></tr>
+      <tr><td>BFF que orquesta llamadas a colas</td><td><span class="badge badge-ok">✅</span></td><td>Producer: lecturas HTTP a Consumer, escrituras vía RabbitMQ</td></tr>
+      <tr><td>2 endpoints que llamen a cola</td><td><span class="badge badge-ok">✅</span></td><td>POST /api/guias (produce), POST /api/rabbit/guia/procesar (consume)</td></tr>
+      <tr><td>CRUD completo</td><td><span class="badge badge-ok">✅</span></td><td>Create, Read, Update, Delete para guías y transportistas</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════ 3. RABBITMQ ════════════════ -->
+<section id="s3">
+  <h2>3. Colas de Mensajes en RabbitMQ <span class="puntos">(15 pts)</span></h2>
+
+  <h3>3.1 Configuración de RabbitMQ</h3>
+  <table>
+    <tr><td><strong>Host</strong></td><td><code>rabbitmq</code> (nombre del contenedor Docker en red <code>cloud-network</code>)</td></tr>
+    <tr><td><strong>Puerto</strong></td><td>5672</td></tr>
+    <tr><td><strong>Credenciales</strong></td><td>guest / guest</td></tr>
+    <tr><td><strong>Imagen</strong></td><td>rabbitmq:3-management</td></tr>
+  </table>
+
+  <h3>3.2 Colas, Exchanges y Bindings</h3>
+  <p>El sistema define <strong>4 colas principales + 2 DLQ</strong> para guías y transportistas.</p>
+
+  <h4>Colas para Guías</h4>
+  <table>
+    <thead><tr><th>Componente</th><th>Nombre</th><th>Tipo</th><th>Propiedades</th></tr></thead>
+    <tbody>
+      <tr><td>Exchange</td><td><code>guia.exchange</code></td><td>Direct</td><td>—</td></tr>
+      <tr><td>Cola principal</td><td><code>guia.queue</code></td><td>Durable</td><td>DLX → <code>guia.dlx.exchange</code></td></tr>
+      <tr><td>DLX Exchange</td><td><code>guia.dlx.exchange</code></td><td>Direct</td><td>—</td></tr>
+      <tr><td>Dead Letter Queue</td><td><code>guia.dlq</code></td><td>Durable</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Colas para Transportistas</h4>
+  <table>
+    <thead><tr><th>Componente</th><th>Nombre</th><th>Tipo</th><th>Propiedades</th></tr></thead>
+    <tbody>
+      <tr><td>Exchange</td><td><code>transportista.exchange</code></td><td>Direct</td><td>—</td></tr>
+      <tr><td>Cola principal</td><td><code>transportista.queue</code></td><td>Durable</td><td>DLX → <code>transportista.dlx.exchange</code></td></tr>
+      <tr><td>DLX Exchange</td><td><code>transportista.dlx.exchange</code></td><td>Direct</td><td>—</td></tr>
+      <tr><td>Dead Letter Queue</td><td><code>transportista.dlq</code></td><td>Durable</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Configuración en código</h4>
+  <p class="filepath">RabbitMQConfig.java (ambos módulos)</p>
+  <pre>@Configuration
+public class RabbitMQConfig {
+    @Bean public DirectExchange guiaExchange() { return new DirectExchange("guia.exchange"); }
+    @Bean public Queue guiaQueue() {
+        return QueueBuilder.durable("guia.queue")
+            .withArgument("x-dead-letter-exchange", "guia.dlx.exchange")
+            .withArgument("x-dead-letter-routing-key", "guia.dlq")
+            .build();
+    }
+    @Bean public DirectExchange guiaDlxExchange() { return new DirectExchange("guia.dlx.exchange"); }
+    @Bean public Queue guiaDlq() { return QueueBuilder.durable("guia.dlq").build(); }
+
+    @Bean public Jackson2JsonMessageConverter jsonMessageConverter() {
+        Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
+        converter.setTrustedPackages("*");
+        converter.setTypePrecedence(Jackson2JsonMessageConverter.TypePrecedence.INFERRED);
+        return converter;
+    }
+}</pre>
+
+  <h4>Archivo de constantes</h4>
+  <p class="filepath">util/RabbitConstants.java (ambos módulos)</p>
+  <pre>public class RabbitConstants {
+    public static final String GUIA_QUEUE              = "guia.queue";
+    public static final String GUIA_DLQ                = "guia.dlq";
+    public static final String GUIA_EXCHANGE           = "guia.exchange";
+    public static final String GUIA_DLX_EXCHANGE       = "guia.dlx.exchange";
+    public static final String TRANSPORTISTA_QUEUE     = "transportista.queue";
+    public static final String TRANSPORTISTA_DLQ       = "transportista.dlq";
+    public static final String TRANSPORTISTA_EXCHANGE  = "transportista.exchange";
+    public static final String TRANSPORTISTA_DLX_EXCHANGE = "transportista.dlx.exchange";
+}</pre>
+
+  <h3>3.3 Productores (Producer module)</h3>
+  <p class="filepath">RabbitMQGuiaProducer.java</p>
+  <pre>@Service
+public class RabbitMQGuiaProducer {
+    @Autowired private RabbitTemplate rabbitTemplate;
+
+    public void sendMessage(GuiaMessageDTO message) {
+        rabbitTemplate.convertAndSend(RabbitConstants.GUIA_QUEUE, message);
+    }
+}</pre>
+
+  <p class="filepath">RabbitMQTransportistaProducer.java</p>
+  <pre>@Service
+public class RabbitMQTransportistaProducer {
+    @Autowired private RabbitTemplate rabbitTemplate;
+
+    public void sendMessage(TransportistaMessageDTO message) {
+        rabbitTemplate.convertAndSend(RabbitConstants.TRANSPORTISTA_QUEUE, message);
+    }
+}</pre>
+
+  <h4>Flujo de envío desde GuiaService (Producer)</h4>
+  <pre>@Service
+public class GuiaService {
+    private final RabbitMQGuiaProducer producer;
+
+    public String createGuia(GuiaCreateDTO dto) {
+        GuiaMessageDTO msg = new GuiaMessageDTO();
+        msg.setOperacion("CREATE");
+        msg.setGuiaCreate(dto);
+        producer.sendMessage(msg);
+        return "Solicitud para crear la guia enviada a RabbitMQ";
+    }
+    // Operaciones: CREATE, UPDATE, DELETE, UPLOAD_S3, UPDATE_S3, DELETE_S3
+}</pre>
+
+  <h3>3.4 Consumidores (Consumer module)</h3>
+  <p class="filepath">GuiaConsumer.java</p>
+  <pre>@Service
+public class GuiaConsumer {
+    @Autowired private GuiaService guiaService;
+
+    @RabbitListener(queues = RabbitConstants.GUIA_QUEUE,
+                    containerFactory = "rabbitListenerContainerFactory")
+    public void receive(GuiaMessageDTO dto) {
+        switch (dto.getOperacion()) {
+            case "CREATE":     guiaService.createGuia(dto.getGuiaCreate()); break;
+            case "UPDATE":     guiaService.updateGuia(dto.getId(), dto.getGuiaUpdate()); break;
+            case "DELETE":     guiaService.deleteGuia(dto.getId()); break;
+            case "UPLOAD_S3":  guiaService.subirArchivoS3(dto.getId()); break;
+            case "UPDATE_S3":  guiaService.actualizarArchivoS3(dto.getId(), dto.getGuiaUpdate()); break;
+            case "DELETE_S3":  guiaService.eliminarArchivoS3(dto.getId()); break;
+            default: throw new IllegalArgumentException("Operación no válida");
+        }
+    }
+}</pre>
+
+  <p class="filepath">TransportistaConsumer.java</p>
+  <pre>@Service
+public class TransportistaConsumer {
+    @Autowired private TransportistaService transportistaService;
+
+    @RabbitListener(queues = RabbitConstants.TRANSPORTISTA_QUEUE,
+                    containerFactory = "rabbitListenerContainerFactory")
+    public void receive(TransportistaMessageDTO dto) {
+        switch (dto.getOperacion()) {
+            case "CREATE": transportistaService.saveTransportista(dto.getTransportistaDTO()); break;
+            case "UPDATE": transportistaService.updateTransportista(dto.getId(), dto.getTransportistaDTO()); break;
+            case "DELETE": transportistaService.deleteTransportista(dto.getId()); break;
+            default: throw new IllegalArgumentException("Operación no soportada");
+        }
+    }
+}</pre>
+
+  <h3>3.5 Mecanismo Dead Letter Queue (DLQ)</h3>
+  <p>El Consumer configura un <strong>RetryInterceptor</strong> que limita los reintentos y envía mensajes fallidos a la DLQ:</p>
+  <pre>@Bean
+public RetryOperationsInterceptor retryInterceptor(RabbitTemplate rabbitTemplate) {
+    return RetryInterceptorBuilder.stateless()
+        .maxAttempts(1)
+        .recoverer(new RejectAndDontRequeueRecoverer())
+        .build();
+}</pre>
+
+  <div class="diagram"><pre>Producer → guia.exchange → guia.queue → Consumer
+                                    ↓ (error)
+                              guia.dlx.exchange → guia.dlq</pre></div>
+
+  <h3>3.6 Despliegue RabbitMQ en Docker</h3>
+  <pre>docker run -d \
+  --name rabbitmq \
+  --network cloud-network \
+  --restart unless-stopped \
+  -p 5672:5672 \
+  -p 15672:15672 \
+  rabbitmq:3-management</pre>
+
+  <h3>3.7 Evidencia de cumplimiento</h3>
+  <table>
+    <thead><tr><th>Requisito</th><th>Estado</th><th>Evidencia</th></tr></thead>
+    <tbody>
+      <tr><td>Colas RabbitMQ en Docker</td><td><span class="badge badge-ok">✅</span></td><td>Imagen <code>rabbitmq:3-management</code> en deploy.yml</td></tr>
+      <tr><td>Productores en Java</td><td><span class="badge badge-ok">✅</span></td><td>RabbitMQGuiaProducer + RabbitMQTransportistaProducer</td></tr>
+      <tr><td>Consumidores en Java</td><td><span class="badge badge-ok">✅</span></td><td>GuiaConsumer + TransportistaConsumer con @RabbitListener</td></tr>
+      <tr><td>Cola de guías + DLQ</td><td><span class="badge badge-ok">✅</span></td><td><code>guia.queue</code> durable con DLX + <code>guia.dlq</code></td></tr>
+      <tr><td>Cola de transportistas + DLQ</td><td><span class="badge badge-ok">✅</span></td><td><code>transportista.queue</code> + <code>transportista.dlq</code></td></tr>
+      <tr><td>Serialización JSON</td><td><span class="badge badge-ok">✅</span></td><td>Jackson2JsonMessageConverter con INFERRED</td></tr>
+      <tr><td>Retry + DLX</td><td><span class="badge badge-ok">✅</span></td><td>RetryOperationsInterceptor con maxAttempts=1</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════ 4. AZURE AD B2C ════════════════ -->
+<section id="s4">
+  <h2>4. Identity as a Service — Azure AD B2C <span class="puntos">(15 pts)</span></h2>
+
+  <h3>4.1 Configuración en application.properties</h3>
+  <p class="filepath">transportmanagement-producer/src/main/resources/application.properties</p>
+  <pre>spring.security.oauth2.resourceserver.jwt.jwk-set-uri=https://despachoservice2.b2clogin.com/despachoservice2.onmicrosoft.com/discovery/v2.0/keys?p=B2C_1_despacho_signin</pre>
+
+  <table>
+    <thead><tr><th>Elemento</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Tenant</td><td><code>despachoservice2.onmicrosoft.com</code></td></tr>
+      <tr><td>Tenant ID</td><td><code>5199d2b5-40ed-44c1-a8e5-f4a83132a743</code></td></tr>
+      <tr><td>User Flow</td><td><code>B2C_1_despacho_signin</code> (Sign up and sign in)</td></tr>
+      <tr><td>JWKS URI</td><td><code>.../discovery/v2.0/keys?p=B2C_1_despacho_signin</code></td></tr>
+      <tr><td>Issuer</td><td><code>https://despachoservice2.b2clogin.com/5199d2b5-40ed-44c1-a8e5-f4a83132a743/v2.0/</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.2 Implementación de Spring Security</h3>
+  <p class="filepath">SecurityConfig.java — transportmanagement-producer/config/</p>
+  <pre>@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
+    private String jwkSetUri;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/h2-console/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+            .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+        return http.build();
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        NimbusJwtDecoder decoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
+        decoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(
+            "https://despachoservice2.b2clogin.com/5199d2b5-40ed-44c1-a8e5-f4a83132a743/v2.0/"
+        ));
+        return decoder;
+    }
+}</pre>
+
+  <h3>4.3 Características de seguridad</h3>
+  <table>
+    <thead><tr><th>Característica</th><th>Implementación</th></tr></thead>
+    <tbody>
+      <tr><td>Autenticación JWT</td><td><code>.oauth2ResourceServer().jwt()</code></td></tr>
+      <tr><td>Validación de firma</td><td><code>NimbusJwtDecoder</code> con JWK Set URI de Azure B2C</td></tr>
+      <tr><td>Validación de issuer</td><td><code>JwtValidators.createDefaultWithIssuer(...)</code></td></tr>
+      <tr><td>CSRF deshabilitado</td><td><code>csrf.ignoringRequestMatchers("/h2-console/**")</code></td></tr>
+      <tr><td>Stateless</td><td>Por defecto en OAuth2 Resource Server</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.4 Flujo de autenticación</h3>
+  <div class="diagram"><pre>Cliente (Postman)
+    │
+    │  Authorization: Bearer &lt;JWT-Azure&gt;
+    ▼
+Producer (:8080)
+    │
+    ├── SecurityFilterChain
+    │   ├── ¿JWT presente?         → NO  → 401 Unauthorized
+    │   ├── ¿Firma válida (JWKS)? → NO  → 401 Unauthorized
+    │   ├── ¿Issuer correcto?     → NO  → 401 Unauthorized
+    │   └── ¿Autenticado?         → SÍ  → Endpoint procesa
+    ▼
+Controller (@RestController)</pre></div>
+
+  <h3>4.5 Evidencia de cumplimiento</h3>
+  <table>
+    <thead><tr><th>Requisito</th><th>Estado</th><th>Evidencia</th></tr></thead>
+    <tbody>
+      <tr><td>IDaaS configurado (Azure AD B2C)</td><td><span class="badge badge-ok">✅</span></td><td>Tenant <code>despachoservice2</code>, JWK Set URI configurado</td></tr>
+      <tr><td>Backend securitizado (Spring Security)</td><td><span class="badge badge-ok">✅</span></td><td>SecurityConfig.java con oauth2ResourceServer().jwt()</td></tr>
+      <tr><td>Validación JWT (firma + issuer)</td><td><span class="badge badge-ok">✅</span></td><td>NimbusJwtDecoder + JwtValidators</td></tr>
+      <tr><td>Protección de endpoints</td><td><span class="badge badge-ok">✅</span></td><td><code>.anyRequest().authenticated()</code> en Producer</td></tr>
+      <tr><td>Consumer interno sin auth</td><td><span class="badge badge-ok">✅</span></td><td>Consumer no expone seguridad (uso interno)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════ 5. API MANAGER ════════════════ -->
+<section id="s5">
+  <h2>5. API Manager <span class="puntos">(10 pts)</span></h2>
+
+  <h3>5.1 Preparación para API Manager</h3>
+  <p>El código está preparado para integrarse con <strong>AWS API Gateway</strong>:</p>
+  <ol>
+    <li><strong>Todos los endpoints REST definidos</strong> en el Producer (17 endpoints) — listos para ser registrados</li>
+    <li>El Producer acepta JWT en header <code>Authorization</code> — compatible con autorizadores JWT de API Gateway</li>
+    <li><strong>Health check endpoint</strong> disponible vía Actuator (<code>/actuator/health</code>) para monitoreo</li>
+  </ol>
+
+  <h3>5.2 Configuración de Actuator</h3>
+  <pre>management.endpoints.web.exposure.include=*</pre>
+
+  <h3>5.3 Endpoints a registrar en API Manager</h3>
+  <table>
+    <thead><tr><th>Método</th><th>Ruta</th><th>Propósito</th></tr></thead>
+    <tbody>
+      <tr><td><code>POST</code></td><td>/api/guias</td><td>Crear guía</td></tr>
+      <tr><td><code>GET</code></td><td>/api/guias</td><td>Listar guías</td></tr>
+      <tr><td><code>GET</code></td><td>/api/guias/{id}</td><td>Obtener guía</td></tr>
+      <tr><td><code>PUT</code></td><td>/api/guias/{id}</td><td>Modificar guía</td></tr>
+      <tr><td><code>DELETE</code></td><td>/api/guias/{id}</td><td>Eliminar guía</td></tr>
+      <tr><td><code>GET</code></td><td>/api/guias/transportista/{id}</td><td>Buscar por transportista</td></tr>
+      <tr><td><code>GET</code></td><td>/api/guias/fecha/{fecha}</td><td>Buscar por fecha</td></tr>
+      <tr><td><code>POST</code></td><td>/api/guias/s3/{id}</td><td>Subir a S3</td></tr>
+      <tr><td><code>GET</code></td><td>/api/guias/s3/{id}</td><td>Descargar de S3</td></tr>
+      <tr><td><code>DELETE</code></td><td>/api/guias/s3/{id}</td><td>Eliminar de S3</td></tr>
+      <tr><td><code>GET</code></td><td>/api/transportistas</td><td>Listar transportistas</td></tr>
+      <tr><td><code>GET</code></td><td>/api/transportistas/{id}</td><td>Obtener transportista</td></tr>
+      <tr><td><code>POST</code></td><td>/api/transportistas</td><td>Crear transportista</td></tr>
+      <tr><td><code>PUT</code></td><td>/api/transportistas/{id}</td><td>Modificar transportista</td></tr>
+      <tr><td><code>DELETE</code></td><td>/api/transportistas/{id}</td><td>Eliminar transportista</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5.4 Arquitectura propuesta para API Gateway</h3>
+  <div class="diagram"><pre>Cliente (Postman/App)
+    │
+    │  Authorization: Bearer &lt;JWT&gt;
+    ▼
+┌───────────────────────────┐
+│  AWS API Gateway          │
+│  ┌─────────────────────┐  │
+│  │ JWT Authorizer       │  │  ← Validación inicial JWT (Azure AD B2C)
+│  │ (Issuer: Azure B2C)  │  │
+│  └─────────────────────┘  │
+│            │               │
+│  ┌─────────────────────┐  │
+│  │ 16 rutas registradas │  │  ← Proxy HTTP → EC2:8080
+│  └─────────────────────┘  │
+└───────────────────────────┘
+    │
+    │  JWT reenviado al backend
+    ▼
+┌───────────────────────────┐
+│  EC2 — Producer (:8080)   │
+│  Spring Security           │  ← Segunda validación JWT
+│  (OAuth2 Resource Server)  │
+└───────────────────────────┘</pre></div>
+
+  <h3>5.5 Captura — Rutas configuradas en API Gateway</h3>
+  <figure class="figure">
+    <img src="imgs/RutasAPI.png" alt="Rutas configuradas en AWS API Gateway">
+    <figcaption>Figura 1. Rutas del API Gateway (curso-api) con 11 endpoints registrados en stage <em>produccion</em>.</figcaption>
+  </figure>
+
+  <h3>5.6 Evidencia de cumplimiento</h3>
+  <table>
+    <thead><tr><th>Requisito</th><th>Estado</th><th>Evidencia</th></tr></thead>
+    <tbody>
+      <tr><td>Endpoints listos para registro</td><td><span class="badge badge-ok">✅</span></td><td>17 endpoints REST definidos en Producer</td></tr>
+      <tr><td>Compatible con autorizador JWT</td><td><span class="badge badge-ok">✅</span></td><td>SecurityConfig acepta JWT Bearer</td></tr>
+      <tr><td>Health check disponible</td><td><span class="badge badge-ok">✅</span></td><td>Actuator <code>/actuator/health</code> expuesto</td></tr>
+      <tr><td>Configuración API Gateway</td><td><span class="badge badge-warn">⚠️</span></td><td>Requiere configuración en AWS Console (paso manual)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════ 6. AWS S3 ════════════════ -->
+<section id="s6">
+  <h2>6. Almacenamiento en la Nube — AWS S3 <span class="puntos">(10 pts)</span></h2>
+
+  <h3>6.1 Configuración AWS S3</h3>
+  <p class="filepath">transportmanagement-consumer/src/main/resources/application.properties</p>
+  <pre>aws.access-key=${AWS_ACCESS_KEY_ID}
+aws.secret-key=${AWS_SECRET_ACCESS_KEY}
+aws.session-token=${AWS_SESSION_TOKEN}
+aws.region=us-east-1
+aws.bucket.name=${AWS_S3_BUCKET:despacho-grupo3-bucket}</pre>
+
+  <h3>6.2 Configuración del cliente S3</h3>
+  <p class="filepath">StorageConfig.java</p>
+  <pre>@Configuration
+public class StorageConfig {
+    @Value("${aws.access-key}") private String accessKey;
+    @Value("${aws.secret-key}") private String accessSecret;
+    @Value("${aws.session-token}") private String sessionToken;
+    @Value("${aws.region}") private String region;
+
+    @Bean
+    public AmazonS3 s3Client() {
+        AWSCredentials credentials = new BasicSessionCredentials(accessKey, accessSecret, sessionToken);
+        return AmazonS3ClientBuilder.standard()
+            .withCredentials(new AWSStaticCredentialsProvider(credentials))
+            .withRegion(region).build();
+    }
+}</pre>
+
+  <p>Se utiliza <strong>AWS SDK v1</strong> con credenciales de sesión (<code>BasicSessionCredentials</code>) compatibles con AWS Academy Learner Lab.</p>
+
+  <h3>6.3 Repositorio S3</h3>
+  <p class="filepath">S3Repository.java (interfaz) + S3RepositoryImpl.java (implementación)</p>
+  <pre>public interface S3Repository {
+    List&lt;Asset&gt; listObjectsInBucket(String bucket);
+    S3ObjectInputStream getObject(String bucketName, String fileName) throws IOException;
+    byte[] downloadFile(String bucketName, String fileName) throws IOException;
+    void moveObject(String bucketName, String fileKey, String destinationFileKey);
+    void deleteObject(String bucketName, String fileKey);
+    String uploadFile(String bucketName, String fileName, File fileObj);
+}</pre>
+
+  <p>Implementa todas las operaciones con el SDK de AWS S3: <code>listObjectsV2()</code>, <code>getObject()</code>, <code>putObject()</code>, <code>copyObject()</code>, <code>deleteObject()</code>.</p>
+
+  <h3>6.4 Integración con lógica de negocio</h3>
+  <p class="filepath">GuiaService.java (Consumer)</p>
+  <pre>@Service
+public class GuiaService {
+    @Value("${aws.bucket.name}") private String bucketName;
+
+    public void subirArchivoS3(Long id) {
+        GuiaDespacho guia = guiaRepository.findById(id).orElseThrow(...);
+        generarArchivo(id);
+        String key = String.format("%d/%02d/%02d/%s/guia_%d.txt",
+            LocalDate.now().getYear(), LocalDate.now().getMonthValue(),
+            LocalDate.now().getDayOfMonth(),
+            guia.getTransportista().getNombre(), guia.getNumeroGuia());
+        File file = new File(guia.getRutaEfs());
+        s3Repository.uploadFile(bucketName, key, file);
+        guia.setRutaS3(key);
+        guiaRepository.save(guia);
+    }
+
+    public byte[] descargarArchivo(Long id) {
+        GuiaDespacho guia = guiaRepository.findById(id).orElseThrow(...);
+        return s3Repository.downloadFile(bucketName, guia.getRutaS3());
+    }
+
+    public void eliminarArchivoS3(Long id) {
+        GuiaDespacho guia = guiaRepository.findById(id).orElseThrow(...);
+        if (guia.getRutaS3() != null) {
+            s3Repository.deleteObject(bucketName, guia.getRutaS3());
+            guia.setRutaS3(null);
+            guiaRepository.save(guia);
+        }
+    }
+}</pre>
+
+  <h3>6.5 Estructura de carpetas en S3</h3>
+  <div class="diagram"><pre>despacho-grupo3-bucket/
+└── {YYYY}/
+    └── {MM}/
+        └── {DD}/
+            └── {transportista-nombre}/
+                └── guia_{numero}.txt
+
+Ejemplo: 2025/07/15/Transportes del Sur/guia_1001.txt</pre></div>
+
+  <h3>6.6 Captura — Bucket S3</h3>
+  <figure class="figure">
+    <img src="imgs/S3.png" alt="Consola AWS S3 - Bucket despacho-grupo3-bucket">
+    <figcaption>Figura 2. Archivos almacenados en el bucket <code>despacho-grupo3-bucket</code> (AWS S3, región us-east-1).</figcaption>
+  </figure>
+
+  <h3>6.7 Evidencia de cumplimiento</h3>
+  <table>
+    <thead><tr><th>Requisito</th><th>Estado</th><th>Evidencia</th></tr></thead>
+    <tbody>
+      <tr><td>Almacenamiento Cloud implementado</td><td><span class="badge badge-ok">✅</span></td><td>AWS S3 con AmazonS3 SDK v1</td></tr>
+      <tr><td>Subida automática de archivos</td><td><span class="badge badge-ok">✅</span></td><td>GuiaService.subirArchivoS3() → s3Repository.uploadFile()</td></tr>
+      <tr><td>Descarga de archivos</td><td><span class="badge badge-ok">✅</span></td><td>GuiaService.descargarArchivo() → s3Repository.downloadFile()</td></tr>
+      <tr><td>Estructura de carpetas organizada</td><td><span class="badge badge-ok">✅</span></td><td>Por año/mes/día/transportista</td></tr>
+      <tr><td>Eliminación de archivos en S3</td><td><span class="badge badge-ok">✅</span></td><td>GuiaService.eliminarArchivoS3() → s3Repository.deleteObject()</td></tr>
+      <tr><td>Credenciales AWS Academy</td><td><span class="badge badge-ok">✅</span></td><td>BasicSessionCredentials (access key + secret + session token)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════ 7. CI/CD ════════════════ -->
+<section id="s7">
+  <h2>7. Despliegue Pipeline CI/CD <span class="puntos">(10 pts)</span></h2>
+
+  <h3>7.1 Pipeline de GitHub Actions</h3>
+  <p class="filepath">.github/workflows/deploy.yml</p>
+  <p>El pipeline se ejecuta en cada <strong>push</strong> y <strong>pull request</strong> a la rama <code>main</code>.</p>
+
+  <h3>7.2 Flujo del pipeline</h3>
+  <div class="diagram"><pre>Push a main
+    │
+    ▼
+Checkout repository
+    │
+    ▼
+Login DockerHub
+    │
+    ▼
+Build Docker images
+    ├── cursosonline-producer:latest
+    └── cursosonline-consumer:latest
+    │
+    ▼
+Push images to DockerHub
+    │
+    ▼
+Configure AWS credentials
+    │
+    ▼
+SSH into EC2
+    ├── docker pull images
+    ├── docker network create cloud-network
+    ├── Deploy RabbitMQ (rabbitmq:3-management)
+    ├── Deploy Producer (puerto 8080)
+    │   └── Env vars: AWS creds, S3 bucket, consumer URL
+    └── Deploy Consumer (puerto 8081)
+        └── Env vars: AWS creds, S3 bucket, producer URL
+    │
+    ▼
+Health check (curl a EC2:8080/actuator/health)</pre></div>
+
+  <h3>7.3 Captura — Instancia EC2</h3>
+  <figure class="figure">
+    <img src="imgs/EC2.png" alt="Instancia EC2 en AWS">
+    <figcaption>Figura 3. Instancia EC2 (IP elástica 54.86.122.135) con los contenedores Docker desplegados.</figcaption>
+  </figure>
+
+  <h3>7.4 Dockerfiles multi-stage</h3>
+  <p class="filepath">transportmanagement-producer/Dockerfile</p>
+  <pre>FROM eclipse-temurin:21-jdk AS build
+RUN apt-get update && apt-get install -y maven
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]</pre>
+
+  <h3>7.5 Variables de entorno en EC2</h3>
+  <h4>Producer</h4>
+  <pre>-e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY"
+-e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY"
+-e AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN"
+-e AWS_S3_BUCKET="$S3_BUCKET"
+-e AWS_EC2_URL_CONSUMER="http://cursosonline-consumer:8081"</pre>
+
+  <h4>Consumer</h4>
+  <pre>-e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY"
+-e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_KEY"
+-e AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN"
+-e AWS_S3_BUCKET="$S3_BUCKET"
+-e AWS_EC2_URL_PRODUCER="http://cursosonline-producer:8080"</pre>
+
+  <h3>7.6 Red Docker interna</h3>
+  <p>Los contenedores se comunican mediante la red <code>cloud-network</code> usando nombres de contenedor como hostnames:</p>
+  <ul>
+    <li><code>cursosonline-producer:8080</code> ↔ <code>cursosonline-consumer:8081</code></li>
+    <li>Ambos → <code>rabbitmq:5672</code></li>
+  </ul>
+
+  <h3>7.7 GitHub Secrets requeridos</h3>
+  <table>
+    <thead><tr><th>Secret</th><th>Propósito</th></tr></thead>
+    <tbody>
+      <tr><td><code>DOCKERHUB_USERNAME</code></td><td>Usuario de DockerHub</td></tr>
+      <tr><td><code>DOCKERHUB_TOKEN</code></td><td>Token de acceso a DockerHub</td></tr>
+      <tr><td><code>AWS_ACCESS_KEY_ID</code></td><td>AWS Academy Learner Lab</td></tr>
+      <tr><td><code>AWS_SECRET_ACCESS_KEY</code></td><td>AWS Academy Learner Lab</td></tr>
+      <tr><td><code>AWS_SESSION_TOKEN</code></td><td>AWS Academy Learner Lab</td></tr>
+      <tr><td><code>EC2_HOST</code></td><td>IP elástica de la instancia EC2</td></tr>
+      <tr><td><code>USER_SERVER</code></td><td>Usuario SSH (ec2-user)</td></tr>
+      <tr><td><code>EC2_SSH_KEY</code></td><td>Clave privada SSH (.pem)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>7.8 Evidencia de cumplimiento</h3>
+  <table>
+    <thead><tr><th>Requisito</th><th>Estado</th><th>Evidencia</th></tr></thead>
+    <tbody>
+      <tr><td>Pipeline CI/CD funcional</td><td><span class="badge badge-ok">✅</span></td><td>deploy.yml con build, push, deploy y health check</td></tr>
+      <tr><td>Docker para desarrollo</td><td><span class="badge badge-ok">✅</span></td><td>Dockerfiles multi-stage para ambos módulos</td></tr>
+      <tr><td>Imágenes en DockerHub</td><td><span class="badge badge-ok">✅</span></td><td>Push automático en el pipeline</td></tr>
+      <tr><td>Despliegue automático en EC2</td><td><span class="badge badge-ok">✅</span></td><td>SSH + docker pull + docker run</td></tr>
+      <tr><td>RabbitMQ en contenedor Docker</td><td><span class="badge badge-ok">✅</span></td><td>rabbitmq:3-management desplegado en pipeline</td></tr>
+      <tr><td>Health check post-deploy</td><td><span class="badge badge-ok">✅</span></td><td>curl -sf EC2_HOST:8080/actuator/health</td></tr>
+      <tr><td>Red interna Docker</td><td><span class="badge badge-ok">✅</span></td><td>cloud-network con comunicación por hostname</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════ 8. DOCUMENTACIÓN ════════════════ -->
+<section id="s8">
+  <h2>8. Documentación del Sistema <span class="puntos">(10 pts)</span></h2>
+
+  <h3>8.1 Documentación incluida en el proyecto</h3>
+  <table>
+    <thead><tr><th>Elemento</th><th>Ubicación</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td>Colección Postman</td><td><code>transportmanagement.postman_collection.json</code></td><td>18 requests documentados con bodies de ejemplo</td></tr>
+      <tr><td>Pipeline CI/CD</td><td><code>.github/workflows/deploy.yml</code></td><td>Pipeline completo con comentarios en cada paso</td></tr>
+      <tr><td>Dockerfiles</td><td>Producer y Consumer</td><td>Multi-stage build con Maven + JDK 21</td></tr>
+      <tr><td>Configuración</td><td><code>application.properties</code> (ambos módulos)</td><td>Propiedades documentadas con valores por defecto</td></tr>
+      <tr><td>Ignore</td><td><code>.gitignore</code></td><td>Exclusiones estándar Java/Maven/IDE</td></tr>
+    </tbody>
+  </table>
+
+  <h3>8.2 Colección Postman</h3>
+  <p>La colección incluye <strong>18 requests</strong> agrupados por funcionalidad:</p>
+  <ul>
+    <li><strong>Transportistas:</strong> POST, GET (CRUD)</li>
+    <li><strong>Guías:</strong> POST, GET, PUT, DELETE</li>
+    <li><strong>S3:</strong> Upload, Download, List, Delete</li>
+    <li><strong>EFS:</strong> Generar guía en almacenamiento temporal</li>
+  </ul>
+  <p><strong>URL base:</strong> <code>http://54.86.122.135:8080</code> (IP elástica de EC2)</p>
+
+  <h3>8.3 Evidencia de cumplimiento</h3>
+  <table>
+    <thead><tr><th>Requisito</th><th>Estado</th><th>Evidencia</th></tr></thead>
+    <tbody>
+      <tr><td>Colección Postman documentada</td><td><span class="badge badge-ok">✅</span></td><td>18 requests con bodies de ejemplo</td></tr>
+      <tr><td>Pipeline documentado</td><td><span class="badge badge-ok">✅</span></td><td>deploy.yml con comentarios de cada paso</td></tr>
+      <tr><td>Dockerfiles incluidos</td><td><span class="badge badge-ok">✅</span></td><td>Multi-stage con Maven + JDK 21</td></tr>
+      <tr><td>Código fuente organizado</td><td><span class="badge badge-ok">✅</span></td><td>Paquetes: config, controller, dto, exception, listener, model, repository, service, util</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════ 9. VIDEO ════════════════ -->
+<section id="s9">
+  <h2>9. Video Explicativo <span class="puntos">(10 pts)</span></h2>
+
+  <h3>9.1 Guion propuesto (8–10 minutos)</h3>
+
+  <h4>Minuto 0:00–1:00 — Introducción</h4>
+  <ul>
+    <li>Presentación de los integrantes del equipo</li>
+    <li>Proyecto: Plataforma de Gestión de Transporte Cloud Native</li>
+    <li>Objetivo: Demostrar microservicios, RabbitMQ, Azure AD B2C, S3 y CI/CD</li>
+  </ul>
+
+  <h4>Minuto 1:00–2:30 — Código fuente</h4>
+  <ul>
+    <li>Repositorio GitHub con estructura Maven multi-módulo</li>
+    <li>Producer (BFF securitizado) vs Consumer (procesador de negocio)</li>
+    <li>Dependencias clave en pom.xml</li>
+  </ul>
+
+  <h4>Minuto 2:30–4:00 — RabbitMQ</h4>
+  <ul>
+    <li><code>docker ps</code> mostrando contenedor RabbitMQ</li>
+    <li>Panel de administración: colas, exchanges, bindings</li>
+    <li>DLQ y flujo de mensajes de error</li>
+  </ul>
+
+  <h4>Minuto 4:00–5:30 — Azure AD B2C</h4>
+  <ul>
+    <li>Azure Portal: Tenant, App Registration, User Flow</li>
+    <li>Obtención de JWT y validación de claims</li>
+    <li>SecurityConfig.java — validación JWT en backend</li>
+  </ul>
+
+  <h4>Minuto 5:30–6:30 — API Gateway</h4>
+  <ul>
+    <li>Rutas configuradas en AWS API Gateway</li>
+    <li>Autorizador JWT conectado a Azure AD B2C</li>
+    <li>Stage de producción con URL de invocación</li>
+  </ul>
+
+  <h4>Minuto 6:30–8:30 — Demostración Postman</h4>
+  <ol>
+    <li><strong>POST /api/transportistas</strong> — Crear transportista → 200</li>
+    <li><strong>POST /api/guias</strong> — Crear guía (RabbitMQ) → 202</li>
+    <li><strong>GET /api/guias</strong> — Listar guías → 200 JSON</li>
+    <li><strong>POST /api/guias/s3/{id}</strong> — Subir a S3 → 200</li>
+    <li><strong>GET /api/guias/s3/{id}</strong> — Descargar de S3 → 200</li>
+    <li><strong>Consola AWS S3</strong> — Verificar archivo subido</li>
+    <li><strong>DELETE /api/guias/{id}</strong> — Eliminar guía → 204</li>
+    <li><strong>Sin token</strong> — 401 Unauthorized</li>
+  </ol>
+
+  <h4>Minuto 8:30–9:30 — CI/CD Pipeline</h4>
+  <ul>
+    <li>GitHub Actions: Build → Push DockerHub → Deploy EC2</li>
+    <li>Health check exitoso</li>
+  </ul>
+
+  <h4>Minuto 9:30–10:00 — Cierre</h4>
+  <ul>
+    <li>Resumen de tecnologías: Spring Boot, RabbitMQ, Azure B2C, S3, API Gateway, Docker, GitHub Actions</li>
+    <li>Conclusiones y aprendizajes</li>
+  </ul>
+
+  <h3>9.2 Funcionalidades a demostrar</h3>
+  <table>
+    <thead><tr><th>Funcionalidad</th><th>Endpoint</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td>Crear transportista</td><td><code>POST /api/transportistas</code></td><td>200 OK</td></tr>
+      <tr><td>Crear guía</td><td><code>POST /api/guias</code></td><td>202 (mensaje a cola)</td></tr>
+      <tr><td>Listar guías</td><td><code>GET /api/guias</code></td><td>200 + array JSON</td></tr>
+      <tr><td>Buscar por transportista</td><td><code>GET /api/guias/transportista/{id}</code></td><td>200 + array JSON</td></tr>
+      <tr><td>Subir a S3</td><td><code>POST /api/guias/s3/{id}</code></td><td>200 OK</td></tr>
+      <tr><td>Descargar de S3</td><td><code>GET /api/guias/s3/{id}</code></td><td>200 + archivo</td></tr>
+      <tr><td>Modificar guía</td><td><code>PUT /api/guias/{id}</code></td><td>200 OK</td></tr>
+      <tr><td>Eliminar guía</td><td><code>DELETE /api/guias/{id}</code></td><td>204 No Content</td></tr>
+      <tr><td>Sin autenticación</td><td>Cualquier endpoint</td><td>401 Unauthorized</td></tr>
+      <tr><td>RabbitMQ colas</td><td>UI RabbitMQ</td><td>Mensajes fluyendo</td></tr>
+      <tr><td>S3 bucket</td><td>Consola AWS</td><td>Archivos en estructura</td></tr>
+      <tr><td>Pipeline CI/CD</td><td>GitHub Actions</td><td>Build + Deploy exitoso</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════ 10. ANEXO ════════════════ -->
+<section id="s10">
+  <h2>10. Anexo: Estructura Completa del Proyecto</h2>
+
+  <div class="diagram"><pre>cursos_online/
+├── .github/workflows/deploy.yml                    ← CI/CD Pipeline
+├── pom.xml                                          ← Parent POM (multi-módulo)
+├── transportmanagement.postman_collection.json      ← 18 requests
+│
+├── transportmanagement-producer/                    ← BFF — :8080
+│   ├── Dockerfile
+│   ├── pom.xml                                      ← + Spring Security, OAuth2
+│   └── src/main/java/com/duoc/transportmanagement/
+│       ├── config/
+│       │   ├── RabbitMQConfig.java                   ← Colas, exchanges, DLQ
+│       │   ├── RestTemplateConfig.java                ← HTTP client → Consumer
+│       │   └── SecurityConfig.java                    ← Azure AD B2C JWT
+│       ├── controller/
+│       │   ├── GuiaController.java                    ← 12 endpoints
+│       │   └── TransportistaController.java           ← 5 endpoints
+│       ├── dto/                                      ← 8 DTOs
+│       ├── exception/                                ← GlobalExceptionHandler
+│       ├── service/
+│       │   ├── ConsumerClient.java                    ← HTTP calls → Consumer
+│       │   ├── GuiaService.java                       ← Orquestación BFF
+│       │   ├── RabbitMQGuiaProducer.java              ← → guia.queue
+│       │   ├── RabbitMQTransportistaProducer.java     ← → transportista.queue
+│       │   └── TransportistaService.java
+│       └── util/RabbitConstants.java
+│
+└── transportmanagement-consumer/                    ← Procesador — :8081
+    ├── Dockerfile
+    ├── pom.xml                                      ← Sin Spring Security
+    └── src/main/java/com/duoc/transportmanagement/
+        ├── config/
+        │   ├── RabbitMQConfig.java                   ← Colas, DLX, retry
+        │   └── StorageConfig.java                     ← AWS S3 client
+        ├── controller/
+        │   ├── GuiaController.java                    ← 5 endpoints
+        │   ├── RabbitMQController.java                ← 2 endpoints (prueba)
+        │   ├── S3Controller.java                      ← 6 endpoints (S3)
+        │   └── TransportistaController.java           ← 2 endpoints
+        ├── dto/                                      ← 10 DTOs
+        ├── exception/
+        ├── listener/
+        │   ├── GuiaConsumer.java                      ← @RabbitListener guia.queue
+        │   └── TransportistaConsumer.java             ← @RabbitListener transportista.queue
+        ├── model/
+        │   ├── GuiaDespacho.java                       ← Entidad JPA
+        │   └── Transportista.java                      ← Entidad JPA
+        ├── repository/
+        │   ├── GuiaRepository.java
+        │   ├── S3Repository.java / S3RepositoryImpl.java  ← AWS S3 SDK
+        │   └── TransportistaRepository.java
+        ├── service/
+        │   ├── AwsService.java / AwsServiceImpl.java
+        │   ├── GuiaService.java                        ← Lógica de negocio (404 líneas)
+        │   ├── RabbitAdminService.java / impl
+        │   └── TransportistaService.java
+        └── util/RabbitConstants.java
+
+Total: ~50 archivos Java · 2 microservicios · 2 Dockerfiles · 1 pipeline CI/CD</pre></div>
+</section>
+
+<!-- ════════════════ RESUMEN ════════════════ -->
+<section>
+  <h2>Resumen de Cumplimiento por Criterio</h2>
+
+  <div class="resumen-criterios">
+    <div class="criterio-card">
+      <div class="criterio-num ok">1</div>
+      <div class="criterio-info"><strong>Microservicios Spring Boot</strong><span>20 pts — ✅ Implementado</span></div>
+    </div>
+    <div class="criterio-card">
+      <div class="criterio-num ok">2</div>
+      <div class="criterio-info"><strong>Colas RabbitMQ</strong><span>15 pts — ✅ Implementado</span></div>
+    </div>
+    <div class="criterio-card">
+      <div class="criterio-num ok">3</div>
+      <div class="criterio-info"><strong>Azure AD B2C (IDaaS)</strong><span>15 pts — ✅ Implementado</span></div>
+    </div>
+    <div class="criterio-card">
+      <div class="criterio-num warn">4</div>
+      <div class="criterio-info"><strong>API Manager</strong><span>10 pts — ⚠️ Código listo</span></div>
+    </div>
+    <div class="criterio-card">
+      <div class="criterio-num ok">5</div>
+      <div class="criterio-info"><strong>AWS S3</strong><span>10 pts — ✅ Implementado</span></div>
+    </div>
+    <div class="criterio-card">
+      <div class="criterio-num ok">6</div>
+      <div class="criterio-info"><strong>CI/CD Pipeline</strong><span>10 pts — ✅ Implementado</span></div>
+    </div>
+    <div class="criterio-card">
+      <div class="criterio-num ok">7</div>
+      <div class="criterio-info"><strong>Documentación</strong><span>10 pts — ✅ Completa</span></div>
+    </div>
+    <div class="criterio-card">
+      <div class="criterio-num pen">8</div>
+      <div class="criterio-info"><strong>Video explicativo</strong><span>10 pts — 📋 Pendiente</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer class="footer">
+  <p>Documento generado a partir del análisis del código fuente del proyecto <code>cursos_online</code>.</p>
+  <p>Evaluación Final Transversal — Desarrollo Cloud Native (CDY2204) — Semana 9</p>
+  <p>Fundación Instituto Profesional Duoc UC</p>
+</footer>
+
+</div>
+
+</body>
+</html>

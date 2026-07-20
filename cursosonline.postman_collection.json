@@ -1,0 +1,526 @@
+{
+  "info": {
+    "_postman_id": "d73ea88a-4bb7-4c49-abd5-5208c2e0f82a",
+    "name": "cursosonline",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "40703045"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://54.86.122.135:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "POST CURSO 1",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Desarrollo Cloud Native\",\r\n    \"instructor\": \"Nicolas Cavieres\",\r\n    \"categoria\": \"Tecnologia\",\r\n    \"correoInstructor\": \"ni.cavieres@duocuc.cl\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/cursos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "cursos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST CURSO 2",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Bases de Datos en la Nube\",\r\n    \"instructor\": \"Maria Perez\",\r\n    \"categoria\": \"Datos\",\r\n    \"correoInstructor\": \"maria.perez@duocuc.cl\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/cursos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "cursos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET CURSOS",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/cursos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "cursos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET CURSO ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/cursos/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "cursos",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT CURSO 1",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Desarrollo Cloud Native Avanzado\",\r\n    \"instructor\": \"Nicolas Cavieres\",\r\n    \"categoria\": \"Tecnologia\",\r\n    \"correoInstructor\": \"ni.cavieres@duocuc.cl\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/cursos/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "cursos",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE CURSO 2",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/cursos/2",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "cursos",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST INSCRIPCION 1",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"numeroInscripcion\": 1001,\r\n    \"estudiante\": \"Juan Soto\",\r\n    \"correoEstudiante\": \"juan.soto@duocuc.cl\",\r\n    \"cursoId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST INSCRIPCION 2",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"numeroInscripcion\": 1002,\r\n    \"estudiante\": \"Ana Rojas\",\r\n    \"correoEstudiante\": \"ana.rojas@duocuc.cl\",\r\n    \"cursoId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET INSCRIPCIONES",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET INSCRIPCION ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET INSCRIPCIONES POR CURSO",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones/curso/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones",
+            "curso",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET INSCRIPCIONES POR FECHA",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones/fecha/2026-07-19",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones",
+            "fecha",
+            "2026-07-19"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT INSCRIPCION 1 (calificacion)",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"estudiante\": \"Juan Soto\",\r\n    \"correoEstudiante\": \"juan.soto@duocuc.cl\",\r\n    \"calificacion\": 6.5,\r\n    \"estado\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE INSCRIPCION 2",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones/2",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST INSCRIPCION 1 subir certificado a S3",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones/certificado/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones",
+            "certificado",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET INSCRIPCION 1 descargar certificado",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones/certificado/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones",
+            "certificado",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT INSCRIPCION 1 certificado S3",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"estudiante\": \"Juan Soto\",\r\n    \"correoEstudiante\": \"juan.soto@duocuc.cl\",\r\n    \"calificacion\": 6.8,\r\n    \"estado\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones/certificado/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones",
+            "certificado",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE INSCRIPCION 1 certificado S3",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/inscripciones/certificado/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "inscripciones",
+            "certificado",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET DOWNLOAD S3",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "bucketName",
+              "value": "cursosonline-grupo3-bucket",
+              "type": "text"
+            },
+            {
+              "key": "filePath",
+              "value": "2026/07/19/Desarrollo Cloud Native/",
+              "type": "text"
+            },
+            {
+              "key": "fileName",
+              "value": "certificado_1001.txt",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/s3/downloadS3File",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "s3",
+            "downloadS3File"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET LIST S3",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "bucketName",
+              "value": "cursosonline-grupo3-bucket",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/s3/listS3Files",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "s3",
+            "listS3Files"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE FROM S3",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "bucketName",
+              "value": "cursosonline-grupo3-bucket",
+              "type": "text"
+            },
+            {
+              "key": "fileKey",
+              "value": "2026/07/19/Desarrollo Cloud Native/certificado_1001.txt",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/s3/deleteObject",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "s3",
+            "deleteObject"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

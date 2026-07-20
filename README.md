@@ -1,16 +1,16 @@
-# Plataforma de Gestión de Transporte — Cursos Online
+# CursosOnline — Plataforma de Gestión de Cursos en Línea
 
 **Asignatura:** CDY2204 — Desarrollo Cloud Native (Duoc UC)
 **Evaluación Final Transversal — Semana 9**
 
-Plataforma Cloud Native de gestión de transporte compuesta por dos microservicios Spring Boot que se comunican de forma asíncrona mediante RabbitMQ (patrón productor-consumidor).
+Plataforma Cloud Native de gestión de cursos en línea: los **estudiantes** pueden inscribirse a cursos, acceder al contenido y rendir exámenes; los **instructores** gestionan sus cursos y las calificaciones en tiempo real. Compuesta por dos microservicios Spring Boot que se comunican de forma asíncrona mediante RabbitMQ (patrón productor-consumidor).
 
 | Componente | Tecnología |
 |---|---|
 | Backend | Spring Boot 3.5.14 + Java 21 |
 | Mensajería | RabbitMQ (Docker) — colas + DLQ |
-| IDaaS | Azure AD B2C — roles admin / consulta |
-| Almacenamiento | AWS S3 — archivos de guías |
+| IDaaS | Azure AD B2C — roles instructor / estudiante |
+| Almacenamiento | AWS S3 — certificados de aprobación |
 | API Manager | AWS API Gateway + Lambda Authorizer JWT |
 | Base de datos | H2 en memoria |
 | CI/CD | GitHub Actions → Docker Hub → AWS EC2 |
@@ -34,15 +34,24 @@ Plataforma Cloud Native de gestión de transporte compuesta por dos microservici
                      │  Consumer (:8081) ◀──listen─────┘         │
                      │  ├─ RabbitMQListener ◀──────────┘         │
                      │  ├─ H2 Database (JPA)                      │
-                     │  ├─ GuiaService + TransportistaService     │
-                     │  └─ AWS S3 (subida/descarga/eliminación)  │
+                     │  ├─ CursoService + InscripcionService      │
+                     │  └─ AWS S3 (certificados)                  │
                      │                                          │
                      └─────────────────────────────────────────┘
 ```
 
 **Patrón de comunicación:**
 - Lecturas (GET): síncronas via `RestTemplate` → Consumer (:8081)
-- Escrituras (POST/PUT/DELETE): asíncronas via RabbitMQ → Consumer procesa
+- Escrituras (POST/PUT/DELETE): asíncronas via RabbitMQ → Consumer procesa (calificaciones en tiempo real)
+
+---
+
+## Modelo de Dominio
+
+| Entidad | Descripción |
+|---|---|
+| **Curso** | Curso en línea creado y gestionado por un instructor (nombre, instructor, categoría, correo) |
+| **Inscripcion** | Inscripción de un estudiante a un curso. Registra estado (`INSCRITA`, `COMPLETADA`, `ANULADA`) y calificación del examen. Al aprobar, se genera un **certificado** que se almacena en AWS S3 |
 
 ---
 
@@ -51,99 +60,109 @@ Plataforma Cloud Native de gestión de transporte compuesta por dos microservici
 ```
 cursos_online/
 ├── pom.xml                                  # Maven multi-módulo
-├── transportmanagement-producer/            # BFF — API REST + Security
+├── cursosonline-producer/                   # BFF — API REST + Security
 │   ├── Dockerfile
 │   ├── pom.xml
-│   └── src/main/java/com/duoc/transportmanagement/
-│       ├── TransportmanagementApplication.java
+│   └── src/main/java/com/duoc/cursosonline/
+│       ├── CursosonlineApplication.java
 │       ├── config/SecurityConfig.java       # JWT Azure AD B2C
-│       ├── controller/                      # GuiaController + TransportistaController
-│       ├── dto/                             # GuiaDTO, TransportistaDTO, etc.
-│       ├── service/                         # ConsumerClient, GuiaProducerService
-│       └── rabbitmq/                        # RabbitMQConfig, Producer
-├── transportmanagement-consumer/            # Lógica de negocio + BD + S3
+│       ├── controller/                      # CursoController + InscripcionController
+│       ├── dto/                             # CursoDTO, InscripcionDTO, etc.
+│       ├── service/                         # ConsumerClient, Producers RabbitMQ
+│       └── util/                            # RabbitConstants
+├── cursosonline-consumer/                   # Lógica de negocio + BD + S3
 │   ├── Dockerfile
 │   ├── pom.xml
-│   └── src/main/java/com/duoc/transportmanagement/
-│       ├── TransportmanagementApplication.java
-│       ├── config/S3Config.java             # Cliente AWS S3
-│       ├── controller/                      # GuiaController, TransportistaController
-│       ├── model/                           # Entidades JPA
-│       ├── repository/                      # Repositorios JPA
-│       ├── service/                         # GuiaService, S3Service
-│       └── rabbitmq/                        # RabbitMQConfig, Consumer
+│   └── src/main/java/com/duoc/cursosonline/
+│       ├── CursosonlineApplication.java
+│       ├── config/StorageConfig.java        # Cliente AWS S3
+│       ├── controller/                      # CursoController, InscripcionController, S3Controller
+│       ├── listener/                        # CursoConsumer, InscripcionConsumer
+│       ├── model/                           # Entidades JPA (Curso, Inscripcion)
+│       ├── repository/                      # Repositorios JPA + S3
+│       └── service/                         # CursoService, InscripcionService, AwsService
 ├── .github/workflows/deploy.yml             # Pipeline CI/CD
-└── docker-compose.yml
+└── cursosonline.postman_collection.json
 ```
 
 ---
 
 ## API Endpoints
 
-### Guías de Despacho (`/api/guias`)
+### Inscripciones (`/api/inscripciones`) — estudiantes
 
 | Método | Ruta | Descripción | Comunicación |
 |---|---|---|---|
-| `GET` | `/api/guias` | Listar todas las guías | HTTP → Consumer |
-| `GET` | `/api/guias/{id}` | Obtener guía por ID | HTTP → Consumer |
-| `POST` | `/api/guias` | Crear guía | RabbitMQ (async) |
-| `PUT` | `/api/guias/{id}` | Modificar guía | RabbitMQ (async) |
-| `DELETE` | `/api/guias/{id}` | Eliminar guía | RabbitMQ (async) |
-| `GET` | `/api/guias/transportista/{id}` | Buscar por transportista | HTTP → Consumer |
-| `GET` | `/api/guias/fecha/{fecha}` | Buscar por fecha | HTTP → Consumer |
-| `POST` | `/api/guias/s3/{id}` | Subir archivo a S3 | RabbitMQ (async) |
-| `PUT` | `/api/guias/s3/{id}` | Actualizar archivo en S3 | RabbitMQ (async) |
-| `GET` | `/api/guias/s3/{id}` | Descargar archivo de S3 | HTTP → Consumer |
-| `DELETE` | `/api/guias/s3/{id}` | Eliminar archivo de S3 | RabbitMQ (async) |
+| `GET` | `/api/inscripciones` | Listar inscripciones | HTTP → Consumer |
+| `GET` | `/api/inscripciones/{id}` | Obtener inscripción por ID | HTTP → Consumer |
+| `POST` | `/api/inscripciones` | Inscribir estudiante a un curso | RabbitMQ (async) |
+| `PUT` | `/api/inscripciones/{id}` | Registrar calificación / cambiar estado | RabbitMQ (async) |
+| `DELETE` | `/api/inscripciones/{id}` | Anular inscripción | RabbitMQ (async) |
+| `GET` | `/api/inscripciones/curso/{id}` | Inscripciones por curso | HTTP → Consumer |
+| `GET` | `/api/inscripciones/fecha/{fecha}` | Inscripciones por fecha | HTTP → Consumer |
+| `POST` | `/api/inscripciones/certificado/{id}` | Generar y subir certificado a S3 | RabbitMQ (async) |
+| `PUT` | `/api/inscripciones/certificado/{id}` | Actualizar certificado en S3 | RabbitMQ (async) |
+| `GET` | `/api/inscripciones/certificado/{id}` | Descargar certificado de S3 | HTTP → Consumer |
+| `DELETE` | `/api/inscripciones/certificado/{id}` | Eliminar certificado de S3 | RabbitMQ (async) |
 
-### Transportistas (`/api/transportistas`)
+### Cursos (`/api/cursos`) — instructores
 
 | Método | Ruta | Descripción | Comunicación |
 |---|---|---|---|
-| `GET` | `/api/transportistas` | Listar transportistas | HTTP → Consumer |
-| `GET` | `/api/transportistas/{id}` | Obtener transportista | HTTP → Consumer |
-| `POST` | `/api/transportistas` | Crear transportista | RabbitMQ (async) |
-| `PUT` | `/api/transportistas/{id}` | Modificar transportista | RabbitMQ (async) |
-| `DELETE` | `/api/transportistas/{id}` | Eliminar transportista | RabbitMQ (async) |
+| `GET` | `/api/cursos` | Listar cursos | HTTP → Consumer |
+| `GET` | `/api/cursos/{id}` | Obtener curso | HTTP → Consumer |
+| `POST` | `/api/cursos` | Crear curso | RabbitMQ (async) |
+| `PUT` | `/api/cursos/{id}` | Modificar curso | RabbitMQ (async) |
+| `DELETE` | `/api/cursos/{id}` | Eliminar curso | RabbitMQ (async) |
 
 **Total: 16 endpoints REST**
 
 ### Ejemplos de requests
 
-**Crear guía:**
+**Crear curso (instructor):**
 ```json
-POST /api/guias
+POST /api/cursos
 {
-  "codigo": "GUIA-001",
-  "transportista": "Transportes Rápidos SpA",
-  "fechaDespacho": "2025-06-15T10:30:00",
-  "direccionOrigen": "Av. Providencia 1234, Santiago",
-  "direccionDestino": "Av. Apoquindo 5678, Las Condes",
-  "descripcionCarga": "Equipos electrónicos — 3 pallets",
-  "estado": "PENDIENTE"
+  "nombre": "Desarrollo Cloud Native",
+  "instructor": "Nicolas Cavieres",
+  "categoria": "Tecnologia",
+  "correoInstructor": "ni.cavieres@duocuc.cl"
 }
 ```
 
-**Crear transportista:**
+**Inscribir estudiante:**
 ```json
-POST /api/transportistas
+POST /api/inscripciones
 {
-  "nombre": "Transportes Rápidos SpA",
-  "rut": "76.123.456-K",
-  "direccion": "Av. Los Leones 456, Providencia",
-  "telefono": "+56912345678",
-  "email": "contacto@trapidospa.cl"
+  "numeroInscripcion": 1001,
+  "estudiante": "Juan Soto",
+  "correoEstudiante": "juan.soto@duocuc.cl",
+  "cursoId": 1
 }
 ```
+
+**Registrar calificación del examen (instructor, tiempo real):**
+```json
+PUT /api/inscripciones/1
+{
+  "estudiante": "Juan Soto",
+  "correoEstudiante": "juan.soto@duocuc.cl",
+  "calificacion": 6.5,
+  "estado": true
+}
+```
+> `estado: true` → `COMPLETADA`, `estado: false` → `ANULADA`. Al completarse, se puede generar el certificado en S3.
 
 ---
 
 ## RabbitMQ — Colas y Mensajería
 
 ```
-Exchange: exchange-guias (direct)
-  ├── routing key "guia.nueva"   → cola-guias-principal (con DLX)
-  └── DLX: dlx-exchange          → cola-guias-dlq
+Exchange: curso.exchange (direct)
+  └── routing key "curso.queue"        → curso.queue (con DLX)
+Exchange: inscripcion.exchange (direct)
+  └── routing key "inscripcion.queue"  → inscripcion.queue (con DLX)
+DLX: curso.dlx.exchange / inscripcion.dlx.exchange → *.dlq
 ```
 
 ### Levantar con Docker
@@ -168,23 +187,22 @@ UI de administración: http://localhost:15672 (guest/guest)
 | AWS Academy | Learner Lab |
 | Azure | AD B2C Tenant |
 
-### Azure AD B2C
+### Azure AD B2C (IDaaS)
 
 | Config | Valor |
 |---|---|
-| Tenant | `despachoservice2.onmicrosoft.com` |
-| Tenant ID | `5199d2b5-40ed-44c1-a8e5-f4a83132a743` |
-| App | `despacho-service-api2` |
-| Client ID | `0a27f262-a186-457f-b7b5-eb43b284cd4c` |
-| User Flow | `B2C_1_despacho_signin` |
-| Usuario admin | `nikocarambas@gmail.com` |
-| Usuario consulta | `ni.cavieres@duocuc.cl` |
+| Tenant | `cursosonlineb2c.onmicrosoft.com` |
+| App | `cursosonline-api` |
+| User Flow | `B2C_1_cursosonline_signin` |
+| Roles | `instructor` (gestiona cursos y calificaciones) / `estudiante` (se inscribe y consulta) |
+
+> Actualizar `jwk-set-uri` e `issuer-uri` en `cursosonline-producer/src/main/resources/application.properties` con los valores del tenant propio.
 
 ### AWS S3
 
 ```
-Bucket: despacho-grupo3-bucket (us-east-1)
-Estructura: guias/{transportista}/{año}/{mes}/guia-{codigo}.pdf
+Bucket: cursosonline-grupo3-bucket (us-east-1)
+Estructura: certificados/{año}/{mes}/{dia}/{curso}/certificado_{numeroInscripcion}.txt
 ```
 
 ### Variables de entorno (Producer)
@@ -194,7 +212,7 @@ Estructura: guias/{transportista}/{año}/{mes}/guia-{codigo}.pdf
 | `AWS_ACCESS_KEY_ID` | AWS Academy → AWS Details |
 | `AWS_SECRET_ACCESS_KEY` | AWS Academy → AWS Details |
 | `AWS_SESSION_TOKEN` | AWS Academy → AWS Details |
-| `AWS_S3_BUCKET` | `despacho-grupo3-bucket` |
+| `AWS_S3_BUCKET` | `cursosonline-grupo3-bucket` |
 | `AWS_EC2_URL_CONSUMER` | `http://cursosonline-consumer:8081` |
 
 ---
@@ -211,10 +229,10 @@ docker run -d -p 5672:5672 -p 15672:15672 rabbitmq:3-management
 mvn clean install -DskipTests
 
 # 3. Ejecutar Consumer (puerto 8081)
-cd transportmanagement-consumer && mvn spring-boot:run
+cd cursosonline-consumer && mvn spring-boot:run
 
 # 4. Ejecutar Producer (puerto 8080)
-cd transportmanagement-producer && mvn spring-boot:run
+cd cursosonline-producer && mvn spring-boot:run
 ```
 
 - Producer: http://localhost:8080
@@ -225,13 +243,13 @@ cd transportmanagement-producer && mvn spring-boot:run
 
 ```bash
 # Producer
-docker build -t cursosonline-producer ./transportmanagement-producer
+docker build -t cursosonline-producer ./cursosonline-producer
 docker run -d --name cursosonline-producer -p 8080:8080 \
   -e AWS_EC2_URL_CONSUMER="http://host.docker.internal:8081" \
   cursosonline-producer
 
 # Consumer
-docker build -t cursosonline-consumer ./transportmanagement-consumer
+docker build -t cursosonline-consumer ./cursosonline-consumer
 docker run -d --name cursosonline-consumer -p 8081:8081 \
   cursosonline-consumer
 ```
@@ -265,11 +283,11 @@ El pipeline en `.github/workflows/deploy.yml`:
 
 | Variable | Valor |
 |---|---|
-| `S3_BUCKET_NAME` | `despacho-grupo3-bucket` |
+| `S3_BUCKET_NAME` | `cursosonline-grupo3-bucket` |
 
 ---
 
-## API Gateway + Lambda Authorizer
+## API Gateway + Lambda Authorizer (API Manager)
 
 | Componente | Valor |
 |---|---|
@@ -282,13 +300,13 @@ El pipeline en `.github/workflows/deploy.yml`:
 
 ```bash
 curl -H "Authorization: Bearer <TOKEN>" \
-  https://0ljc9aux4k.execute-api.us-east-1.amazonaws.com/produccion/api/guias
+  https://0ljc9aux4k.execute-api.us-east-1.amazonaws.com/produccion/api/cursos
 ```
 
 ### Endpoints directos EC2 (sin seguridad)
 
 ```bash
-curl http://54.86.122.135:8080/api/guias
+curl http://54.86.122.135:8080/api/cursos
 curl http://54.86.122.135:8080/actuator/health
 ```
 
@@ -297,7 +315,7 @@ curl http://54.86.122.135:8080/actuator/health
 ## SSH a EC2
 
 ```bash
-ssh -i despacho-key.pem ec2-user@54.86.122.135
+ssh -i cursosonline-key.pem ec2-user@54.86.122.135
 ```
 
 ---
