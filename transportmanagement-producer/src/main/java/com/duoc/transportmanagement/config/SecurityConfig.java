@@ -39,7 +39,7 @@ public class SecurityConfig {
         NimbusJwtDecoder decoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
         // Optional: validate the issuer claim
         decoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(
-                "https://login.microsoftonline.com/5199d2b5-40ed-44c1-a8e5-f4a83132a743/v2.0"
+                "https://despachoservice2.b2clogin.com/5199d2b5-40ed-44c1-a8e5-f4a83132a743/v2.0/"
         ));
         return decoder;
     }
